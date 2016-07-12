@@ -2158,7 +2158,7 @@ class Criteria
                             $isInString = false;
                         }
                     } elseif (!$isInString) {
-                        $parsedString .= preg_replace_callback("/[\w\\\]+\.\w+/", [$this, 'doReplaceNameInExpression'], $stringToTransform);
+                        $parsedString .= preg_replace_callback("/[\w-$\\\]+\.[\w-$]+/", [$this, 'doReplaceNameInExpression'], $stringToTransform);
                         $stringToTransform = '';
                         $stringQuotes = $char;
                         $isInString = true;
@@ -2180,7 +2180,7 @@ class Criteria
         }
 
         if ($stringToTransform) {
-            $parsedString .= preg_replace_callback("/[\w\\\]+\.\w+/", [$this, 'doReplaceNameInExpression'], $stringToTransform);
+            $parsedString .= preg_replace_callback("/[\w-$\\\]+\.[\w-$]+/", [$this, 'doReplaceNameInExpression'], $stringToTransform);
         }
 
         $sql = $parsedString;

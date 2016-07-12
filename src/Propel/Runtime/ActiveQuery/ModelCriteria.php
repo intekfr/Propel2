@@ -1861,9 +1861,18 @@ class ModelCriteria extends BaseModelCriteria
 
             if (false !== strpos($key, '.')) {
                 list($tableName, $columnName) = explode('.', $key);
-                $realColumnName = substr($realFullColumnName, strrpos($realFullColumnName, '.') + 1);
+                $fullColumnNames = explode('.', $realFullColumnName);
+                // if schema is contained in realFullColumnName (ie : Schema.Table.Col)
+                if (count($fullColumnNames) == 3)
+                {
+                	list($schemaName,$realTableName, $realColumnName) = $fullColumnNames;
+                }
+                else // Table and column only
+                {
+                	list($realTableName, $realColumnName) = $fullColumnNames;
+                }
                 if (isset($this->aliases[$tableName])) {
-                    //don't replace a alias with their real table name
+                    //don't replace a alias with their real table name and don't use schema
                     return $this->quoteIdentifier($tableName.'.'.$realColumnName);
                 }
             }
